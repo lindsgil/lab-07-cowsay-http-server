@@ -39,7 +39,7 @@ const server = module.exports = http.createServer(function(req, res) {
       res.write(message);
       res.end();
     }
-  }
+  };
   if(req.method === 'GET') {
     if(req.url.pathname === '/cowsay') {
       let queryText = req.url.query.text;
@@ -48,13 +48,13 @@ const server = module.exports = http.createServer(function(req, res) {
         res.writeHead(400, {'Content-type': 'text/plain'});
         res.write(message);
         res.end();
-    } else {
-      let message = cowsay.say({text: queryText});
-      res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.write(message);
-      res.end();
+      } else {
+        let message = cowsay.say({text: queryText});
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.write(message);
+        res.end();
+      }
     }
   }
-};
-
+});
 server.listen(PORT, () => console.log(`Listen on port, ${PORT}`));
