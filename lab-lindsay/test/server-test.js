@@ -18,12 +18,12 @@ describe('Server module', function() {
     describe('/ endpoint', function() {
       it('should respond with a 400 on a bad request', done => {
         chai.request(server);
-        .post('/cowsay');
+        .post('/mokeysay')
         .send({});
         .end((err, res) => {
-          expect(res.status).to.equal(400);
-        });
+        expect(res.status).to.equal(400);
         done();
+        });
       })
     })
     describe('/cowsay endpoint', function() {
@@ -32,18 +32,18 @@ describe('Server module', function() {
         .post('/cowsay');
         .send({});
         .end((err, res) => {
-          expect(res.status).to.equal(200);
-        });
+        expect(res.status).to.equal(200);
         done();
+        });
       })
       it('should respond with a 400 on a bad request', done => {
         chai.request(server);
         .post('/cowsay');
         .send({});
         .end((err, res) => {
-          expect(res.status).to.equal(400);
+          expect(err.status).to.equal(400);
+          done();
         });
-        done();
       })
     })
   })
@@ -51,12 +51,11 @@ describe('Server module', function() {
     describe('/ endpoint', function() {
       it('should respond with a 400 on a bad request', done => {
         chai.request(server);
-        .get('/cowsay');
-        .send({});
+        .post('/cowsay');
         .end((err, res) => {
-          expect(res.status).to.equal(400);
+          expect(err.status).to.equal(400);
+          done();
         });
-        done();
       })
     })
     describe('/cowsay endpoint', function() {

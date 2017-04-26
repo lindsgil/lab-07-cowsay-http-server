@@ -42,18 +42,16 @@ const server = module.exports = http.createServer(function(req, res) {
   };
   if(req.method === 'GET') {
     if(req.url.pathname === '/cowsay') {
-      let queryText = req.url.query.text;
-      if(!queryText) {
-        let message = cowsay.say({text: 'bad request enter: localhost:3000/cowsay?text=howdy'});
-        res.writeHead(400, {'Content-type': 'text/plain'});
-        res.write(message);
-        res.end();
-      } else {
-        let message = cowsay.say({text: queryText});
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.write(message);
-        res.end();
-      }
+      let queryText = queryString.parse('text=hello');
+      let message = cowsay.say({text: queryText.message});
+      res.writeHead(200, {'Content-type': 'text/plain'});
+      res.write(message);
+      res.end();
+    } else{
+      let message = cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'});
+      res.writeHead(400, {'Content-Type': 'text/plain'});
+      res.write(message);
+      res.end();
     }
   }
 });
