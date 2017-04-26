@@ -1,5 +1,5 @@
 
-'use strict'
+'use strict';
 
 const bodyParser = require('./lib/body-parser');
 const http = require('http');
@@ -42,23 +42,19 @@ const server = module.exports = http.createServer(function(req, res) {
   }
   if(req.method === 'GET') {
     if(req.url.pathname === '/cowsay') {
-      bodyParser(req, function(err) {
-        if(err) console.error(err);
-        let message = cowsay.say({text: req.body.text});
-        console.log(req.body);
-        res.writeHead(200, {'Content-type': 'text/plain'});
+      let queryText = req.url.query.text;
+      if(!queryText) {
+        let message = cowsay.say({text: 'bad request enter: localhost:3000/cowsay?text=howdy'});
+        res.writeHead(400, {'Content-type': 'text/plain'});
         res.write(message);
         res.end();
-      });
     } else {
-      let message = cowsay.say(
-          {text: 'bad request\ntry localhost: 3000/cowsay?text=howdy'}
-        );
-      res.writeHead(400, {'Content-Type': 'text/plain'});
+      let message = cowsay.say({text: queryText});
+      res.writeHead(200, {'Content-Type': 'text/plain'});
       res.write(message);
       res.end();
     }
   }
-});
+};
 
 server.listen(PORT, () => console.log(`Listen on port, ${PORT}`));

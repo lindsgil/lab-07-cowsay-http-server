@@ -28,11 +28,21 @@ describe('Server module', function() {
     })
     describe('/cowsay endpoint', function() {
       it('should respond with a 200 on proper request', done => {
-
+        chai.request(server);
+        .post('/cowsay');
+        .send({});
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+        });
         done();
       })
-      it('should responnd with a 400 on a bad request', done => {
-
+      it('should respond with a 400 on a bad request', done => {
+        chai.request(server);
+        .post('/cowsay');
+        .send({});
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+        });
         done();
       })
     })
@@ -40,7 +50,12 @@ describe('Server module', function() {
   describe('GET method', function() {
     describe('/ endpoint', function() {
       it('should respond with a 400 on a bad request', done => {
-
+        chai.request(server);
+        .get('/cowsay');
+        .send({});
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+        });
         done();
       })
     })
