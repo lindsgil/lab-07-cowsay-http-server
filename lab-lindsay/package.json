@@ -26,6 +26,8 @@
   },
   "homepage": "https://github.com/lindsgil/lab-07-cowsay-http-server#readme",
   "dependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
     "cowsay": "^1.1.9"
   },
   "devDependencies": {

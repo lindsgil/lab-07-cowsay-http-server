@@ -1,6 +1,6 @@
 'use strict';
 
-const server = require('../server');
+const server = require('../server.js');
 const cowsay = require('cowsay');
 const chai = require('chai');
 const http = require('chai-http');
@@ -15,63 +15,227 @@ describe('Server module', function() {
   });
 
   describe('POST method', function() {
-    describe('/ endpoint', function() {
-      it('should respond with a 400 on a bad request', done => {
-        chai.request(server);
-        .post('/mokeysay')
-        .send({});
+    describe('undefined endpoint', function() {
+      it('should respond with a 400 on bad request', done => {
+        chai.request(server)
+        .post('/blah')
+        .send({})
         .end((err, res) => {
-        expect(res.status).to.equal(400);
-        done();
+          expect(err).to.not.be.null;
+          expect(res.status).to.equal(400);
+          //expect(res).to.have.status(400);
         });
-      })
-    })
+        done();
+      });
+    });
+
+    describe('/ endpoint', function() {
+      it('should respond with helloooo', done => {
+        chai.request(server)
+        .post('/')
+        .send({})
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.body).to.equal('helloooo');
+        });
+        done();
+      });
+
+      it('should respond with a 200 on proper request', done => {
+        chai.request(server)
+        .post('/')
+        .send({})
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.status).to.equal(200);
+        });
+        done();
+      });
+
+      it('should respond with a 400 on bad request', done => {
+        chai.request(server)
+        .post('/')
+        .send({})
+        .end((err, res) => {
+          expect(err).to.not.be.null;
+          expect(res.status).to.equal(400);
+        });
+        done();
+      });
+
+      it('should contain a header', done => {
+        chai.request(server)
+        .post('/')
+        .send({})
+        .end((err, res) => {
+          expect(res).to.have.header('content-type', 'text/plain');
+        });
+        done();
+      });
+    });
+
     describe('/cowsay endpoint', function() {
       it('should respond with a 200 on proper request', done => {
-        chai.request(server);
-        .post('/cowsay');
-        .send({});
+        chai.request(server)
+        .post('/cowsay')
+        .send({})
         .end((err, res) => {
-        expect(res.status).to.equal(200);
+          expect(err).to.be.null;
+          expect(res.status).to.equal(400);
+        });
         done();
-        });
-      })
-      it('should respond with a 400 on a bad request', done => {
-        chai.request(server);
-        .post('/cowsay');
-        .send({});
+      });
+
+      it('should respond with a 400 on bad request', done => {
+        chai.request(server)
+        .post('/cowsay')
+        .send({})
         .end((err, res) => {
-          expect(err.status).to.equal(400);
-          done();
+          expect(err).to.not.be.null;
+          expect(res.status).to.equal(400);
         });
-      })
-    })
-  })
+        done();
+      });
+
+      it('should contain a header', done => {
+        chai.request(server)
+        .post('/cowsay')
+        .send({})
+        .end((err, res) => {
+          expect(res).to.have.header('content-type', 'text/plain');
+        });
+        done();
+      });
+
+      it('should be an object', done => {
+        chai.request(server)
+        .post('/cowsay')
+        .send({})
+        .end((err, res) => {
+          expect(res).to.be.a('object');
+        });
+        done();
+      });
+
+      it('should respond with user input', done => {
+        chai.request(server)
+        .post('/')
+        .send({'query':'moo'})
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.body).to.equal('moo');
+        });
+        done();
+      });
+    });
+  });
+
   describe('GET method', function() {
-    describe('/ endpoint', function() {
-      it('should respond with a 400 on a bad request', done => {
-        chai.request(server);
-        .post('/cowsay');
+    describe('undefined endpoint', function() {
+      it('should respond with a 400 on bad request', done => {
+        chai.request(server)
+        .get('/hahahaha')
+        .send({})
         .end((err, res) => {
-          expect(err.status).to.equal(400);
-          done();
+          expect(err).to.not.be.null;
+          expect(res.status).to.equal(400);
         });
-      })
-    })
+        done();
+      });
+    });
+
+    describe('/ endpoint', function() {
+      it('should respond with a 400 on bad request', done => {
+        chai.request(server)
+        .get('/hahahaha')
+        .send({})
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.status).to.equal(400);
+        });
+        done();
+      });
+
+      it('should respond with a 200 on proper request', done => {
+        chai.request(server)
+        .post('/')
+        .send({})
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.status).to.equal(400);
+        });
+        done();
+      });
+
+      it('should contain a header', done => {
+        chai.request(server)
+        .post('/')
+        .send({})
+        .end((err, res) => {
+          expect(res).to.have.header('content-type', 'text/plain');
+        });
+        done();
+      });
+    });
+
     describe('/cowsay endpoint', function() {
-      it('should respond with a 200 on a proper request', done => {
-
+      it('should respond with a 200 on proper request', done => {
+        chai.request(server)
+        .get('/cowsay')
+        .send({})
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.status).to.equal(200);
+        });
         done();
-      })
-      it('should respond with a 400 on a bad request', done => {
+      });
 
+      it('should respond with a 400 on bad request', done => {
+        chai.request(server)
+        .get('/blah')
+        .send({})
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.status).to.equal(400);
+        });
         done();
-      })
-    })
-  })
+      });
+
+      it('should contain a header', done => {
+        chai.request(server)
+        .post('/')
+        .send({})
+        .end((err, res) => {
+          expect(res).to.have.header('content-type', 'text/plain');
+        });
+        done();
+      });
+
+      it('should be an object', done => {
+        chai.request(server)
+        .post('/cowsay')
+        .send({})
+        .end((err, res) => {
+          expect(res).to.be.a('object');
+        });
+        done();
+      });
+
+      it('should respond with user input', done => {
+        chai.request(server)
+        .post('/')
+        .send({'query':'boop'})
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.body).to.equal('boop');
+        });
+        done();
+      });
+    });
+  });
 
   after(done => {
     server.close();
     done();
-  })
+  });
 });
